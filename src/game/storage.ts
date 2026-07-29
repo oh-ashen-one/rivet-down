@@ -6,8 +6,8 @@ const SAVE_KEY = "rivetdown.save.v1";
 const SETTINGS_KEY = "rivetdown.settings.v1";
 
 export const defaultSettings: GameSettings = {
-  musicVolume: 0,
-  sfxVolume: 0,
+  musicVolume: 0.78,
+  sfxVolume: 0.8,
   latencyMs: 0,
   reducedFlash: false,
   reducedMotion: false,

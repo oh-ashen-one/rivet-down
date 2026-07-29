@@ -289,13 +289,13 @@ export default function RivetDown() {
     queueMicrotask(() => {
       if (!active) return;
       setSave(loadSave());
-      const mutedSettings = {
+      const audibleSettings = {
         ...loadSettings(),
-        musicVolume: 0,
-        sfxVolume: 0,
+        musicVolume: defaultSettings.musicVolume,
+        sfxVolume: defaultSettings.sfxVolume,
       };
-      storeSettings(mutedSettings);
-      setSettings(mutedSettings);
+      storeSettings(audibleSettings);
+      setSettings(audibleSettings);
       setDevMode(new URLSearchParams(window.location.search).has("dev"));
       setHydrated(true);
       if (process.env.NODE_ENV === "production" && "serviceWorker" in navigator) {
