@@ -1,0 +1,18 @@
+[package]
+name = "rivet-down"
+version = "0.1.0"
+description = "RIVET//DOWN industrial rhythm autorunner"
+authors = ["RIVET//DOWN contributors"]
+edition = "2021"
+
+[lib]
+name = "rivet_down_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tauri = { version = "2", features = [] }

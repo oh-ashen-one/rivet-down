@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rivet-down.dev/schemas/level-event.schema.json",
+  "title": "RIVET//DOWN LevelEvent",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "beat"],
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "type": {
+      "enum": [
+        "spike",
+        "ceiling-spike",
+        "block",
+        "gap",
+        "pad",
+        "orb",
+        "gate",
+        "saw",
+        "fuse",
+        "checkpoint",
+        "speed"
+      ]
+    },
+    "beat": { "type": "number", "minimum": 0 },
+    "lane": { "enum": ["floor", "ceiling", "mid"] },
+    "widthBeats": { "type": "number", "exclusiveMinimum": 0 },
+    "height": { "type": "number", "exclusiveMinimum": 0 },
+    "y": { "type": "number" },
+    "targetMode": { "enum": ["runner", "polarity", "thruster"] },
+    "gravity": { "enum": [1, -1] },
+    "value": { "type": "number" },
+    "fuseIndex": { "enum": [0, 1, 2] }
+  }
+}

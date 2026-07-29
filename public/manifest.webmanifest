@@ -1,0 +1,22 @@
+{
+  "name": "RIVET//DOWN",
+  "short_name": "RIVET//DOWN",
+  "description": "One input. Five failing systems. An industrial rhythm rage game.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#03090b",
+  "theme_color": "#03090b",
+  "orientation": "landscape",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

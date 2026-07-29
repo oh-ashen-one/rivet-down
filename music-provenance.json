@@ -1,0 +1,81 @@
+{
+  "version": 1,
+  "policy": "source-available soundtrack; see LICENSE-MUSIC.md",
+  "generatedUnderPaidPlan": true,
+  "verifiedAccountPlan": "Pro Plan",
+  "creditsBeforeGeneration": 2460,
+  "generationAuthorizedAt": "2026-07-29T16:55:00Z",
+  "status": "runtime-audio-prepared",
+  "tracks": [
+    {
+      "levelId": "cold-start",
+      "title": "Cold Start",
+      "bpm": 128,
+      "bars": 64,
+      "sunoUrl": "https://suno.com/song/91a77e87-8cf3-49d2-9f05-acd8d33a8a73",
+      "generatedAt": "2026-07-29T17:04:00Z",
+      "model": "v5.5",
+      "masterSha256": "3e88d89dfd9065755ff99cdde39ca1cd4d7ae4272da0c0c3a711dbec34bfe0be",
+      "runtimeSha256": "89d2fe5c2342b6cb5ff06ccb9f862f38fe9505f75d2f59d9b7a2183061f06bca",
+      "durationSeconds": 120,
+      "masterDurationSeconds": 127.8,
+      "runtimeEdit": "trimmed-to-level-duration"
+    },
+    {
+      "levelId": "pressure-line",
+      "title": "Pressure Line",
+      "bpm": 140,
+      "bars": 72,
+      "sunoUrl": "https://suno.com/song/7601aad8-81bf-4f7d-bda5-a3666c80a567",
+      "generatedAt": "2026-07-29T17:06:00Z",
+      "model": "v5.5",
+      "masterSha256": "b2470b908bcbdbaa3f728324b964a725d9ec3a212e3323ab5d746b6d01360389",
+      "runtimeSha256": "84e9695a5ec8aa0add9a1284a496907788c67aabf8f2e336caafdc08cc825738",
+      "durationSeconds": 123.428563,
+      "masterDurationSeconds": 132.2,
+      "runtimeEdit": "trimmed-to-level-duration"
+    },
+    {
+      "levelId": "polarity-shaft",
+      "title": "Polarity Shaft",
+      "bpm": 152,
+      "bars": 80,
+      "sunoUrl": "https://suno.com/song/2610507c-a0bc-4b6f-afe0-4d9f72dadadf",
+      "generatedAt": "2026-07-29T17:06:00Z",
+      "model": "v5.5",
+      "masterSha256": "968772953a1bb2aeea0227f64708876a820373462295a0f1e1908765345245cf",
+      "runtimeSha256": "16b32379ac0500d1a7ac0bb0c02fa2764f452a7a5155fbde92a4bf1fbf052548",
+      "durationSeconds": 126.315792,
+      "masterDurationSeconds": 157.32,
+      "runtimeEdit": "trimmed-to-level-duration"
+    },
+    {
+      "levelId": "turbine-blackout",
+      "title": "Turbine Blackout",
+      "bpm": 168,
+      "bars": 88,
+      "sunoUrl": "https://suno.com/song/7fdd7c32-e81e-48d2-b379-1790cf9bf589",
+      "generatedAt": "2026-07-29T17:06:00Z",
+      "model": "v5.5",
+      "masterSha256": "71d948140071820198a9d68fdfaaf70cdb66841514ee6c812a0d3832f24f8bd9",
+      "runtimeSha256": "61bdc2137e30acb2052fffc67cbbc479a5a23a5b05157382400f048e60718739",
+      "durationSeconds": 125.714292,
+      "masterDurationSeconds": 134.92,
+      "runtimeEdit": "trimmed-to-level-duration"
+    },
+    {
+      "levelId": "meltdown-zero",
+      "title": "Meltdown Zero",
+      "bpm": 180,
+      "bars": 96,
+      "sunoUrl": "https://suno.com/song/6b70ff51-2f89-4363-bd17-236ba44b8501",
+      "generatedAt": "2026-07-29T17:06:00Z",
+      "model": "v5.5",
+      "masterSha256": "7d00b7c6be6ff4957b88d67b26877e6feee2c3a39323027cad13d8ee29cdfefc",
+      "runtimeSha256": "eb465cd611f059b4413c26efe0ac73953177d7d3fd85769baab2ce61e8e5787b",
+      "durationSeconds": 128,
+      "masterDurationSeconds": 64,
+      "runtimeEdit": "looped-to-level-duration"
+    }
+  ]
+}

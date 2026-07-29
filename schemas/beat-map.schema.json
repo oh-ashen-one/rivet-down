@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rivet-down.dev/schemas/beat-map.schema.json",
+  "title": "RIVET//DOWN BeatMap",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "bpm",
+    "beatsPerBar",
+    "downbeatOffsetSeconds",
+    "durationSeconds",
+    "beatTimestamps"
+  ],
+  "properties": {
+    "bpm": { "type": "number", "exclusiveMinimum": 0 },
+    "beatsPerBar": { "const": 4 },
+    "downbeatOffsetSeconds": { "type": "number" },
+    "durationSeconds": { "type": "number", "exclusiveMinimum": 0 },
+    "beatTimestamps": {
+      "type": "array",
+      "minItems": 2,
+      "items": { "type": "number" }
+    }
+  }
+}

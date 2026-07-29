@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rivet-down.dev/schemas/input-replay.schema.json",
+  "title": "RIVET//DOWN InputReplay",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "levelId", "bpm", "actions"],
+  "properties": {
+    "version": { "const": 1 },
+    "levelId": {
+      "enum": [
+        "cold-start",
+        "pressure-line",
+        "polarity-shaft",
+        "turbine-blackout",
+        "meltdown-zero"
+      ]
+    },
+    "bpm": { "type": "number", "exclusiveMinimum": 0 },
+    "actions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["beat", "kind"],
+        "properties": {
+          "beat": { "type": "number", "minimum": 0 },
+          "kind": { "enum": ["press", "release"] }
+        }
+      }
+    }
+  }
+}

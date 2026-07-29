@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rivet-down.dev/schemas/level-definition.schema.json",
+  "title": "RIVET//DOWN LevelDefinition",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "number",
+    "title",
+    "subtitle",
+    "bpm",
+    "bars",
+    "difficulty",
+    "mechanicLabel",
+    "description",
+    "palette",
+    "beatMap",
+    "events",
+    "checkpoints",
+    "sourceAudio"
+  ],
+  "properties": {
+    "id": {
+      "enum": [
+        "cold-start",
+        "pressure-line",
+        "polarity-shaft",
+        "turbine-blackout",
+        "meltdown-zero"
+      ]
+    },
+    "number": { "type": "integer", "minimum": 1, "maximum": 5 },
+    "title": { "type": "string", "minLength": 1 },
+    "subtitle": { "type": "string", "minLength": 1 },
+    "bpm": { "type": "number", "exclusiveMinimum": 0 },
+    "bars": { "type": "integer", "minimum": 1 },
+    "difficulty": { "type": "integer", "minimum": 1, "maximum": 5 },
+    "mechanicLabel": { "type": "string" },
+    "description": { "type": "string" },
+    "palette": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "background",
+        "backgroundAlt",
+        "accent",
+        "accentSoft",
+        "hazard",
+        "warning",
+        "foreground"
+      ],
+      "properties": {
+        "background": { "type": "integer", "minimum": 0 },
+        "backgroundAlt": { "type": "integer", "minimum": 0 },
+        "accent": { "type": "integer", "minimum": 0 },
+        "accentSoft": { "type": "integer", "minimum": 0 },
+        "hazard": { "type": "integer", "minimum": 0 },
+        "warning": { "type": "integer", "minimum": 0 },
+        "foreground": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "beatMap": { "$ref": "./beat-map.schema.json" },
+    "events": {
+      "type": "array",
+      "items": { "$ref": "./level-event.schema.json" }
+    },
+    "checkpoints": {
+      "type": "array",
+      "items": { "type": "number", "minimum": 0 }
+    },
+    "sourceAudio": {
+      "oneOf": [{ "type": "string" }, { "type": "null" }]
+    }
+  }
+}
