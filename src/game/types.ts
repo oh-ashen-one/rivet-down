@@ -58,6 +58,7 @@ export interface LevelDefinition {
   title: string;
   subtitle: string;
   bpm: number;
+  audioPlaybackRate: number;
   bars: number;
   difficulty: number;
   mechanicLabel: string;

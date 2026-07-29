@@ -5,7 +5,14 @@ describe("RIVET//DOWN campaign", () => {
   it("contains five increasingly demanding levels", () => {
     expect(levels).toHaveLength(5);
     expect(levels.map((level) => level.number)).toEqual([1, 2, 3, 4, 5]);
-    expect(levels.map((level) => level.bpm)).toEqual([128, 140, 152, 168, 180]);
+    expect(levels.map((level) => level.bpm)).toEqual([192, 210, 228, 252, 270]);
+    expect(levels.map((level) => level.audioPlaybackRate)).toEqual([
+      1.5,
+      1.5,
+      1.5,
+      1.5,
+      1.5,
+    ]);
     expect(levels.map((level) => level.bars)).toEqual([64, 72, 80, 88, 96]);
     expect(levels.map((level) => level.difficulty)).toEqual([1, 2, 3, 4, 5]);
   });

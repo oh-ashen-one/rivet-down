@@ -68,8 +68,12 @@ export class RhythmConductor {
     if (this.decodedTrack) {
       const source = this.context!.createBufferSource();
       source.buffer = this.decodedTrack;
+      source.playbackRate.value = this.level.audioPlaybackRate;
       source.connect(this.musicGain!);
-      source.start(audibleStart, offsetSeconds);
+      source.start(
+        audibleStart,
+        offsetSeconds * this.level.audioPlaybackRate,
+      );
       this.trackNode(source);
     }
   }
