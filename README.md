@@ -7,6 +7,8 @@ desktop. The player controls a hexagonal maintenance drone through five
 hand-authored factory levels. Obstacles, physics, procedural music, and visual
 pulses share the same audio-clock-derived beat map.
 
+[Play RIVET//DOWN in your browser](https://rivet-down.solashenone.chatgpt.site/)
+
 ## Current state
 
 - Five complete level definitions from 128 to 180 BPM
@@ -20,9 +22,12 @@ pulses share the same audio-clock-derived beat map.
 - Offline-capable PWA
 - Developer timeline at `/?dev=1`
 
-The build is playable with a deterministic procedural electronic score. The
-five planned Suno masters have **not** been generated or cleared yet; their
-prompts and exact handoff process are documented in `docs/SUNO_PROMPTS.md`.
+The build includes runtime edits of five Suno-generated tracks. Their prompts,
+generation details, plan-at-generation evidence, durations, and SHA-256 hashes
+are documented in `docs/SUNO_PROMPTS.md` and `music-provenance.json`. The music
+is distributed under the separate source-available terms in
+`LICENSE-MUSIC.md`; it is not covered by the MIT code license or the CC0 asset
+dedication.
 
 ## Run locally
 
@@ -46,9 +51,10 @@ The Tauri 2 desktop shell lives in `src-tauri/`. With Rust installed, use
 `npm run desktop:dev` or `npm run desktop:build` to produce native macOS,
 Windows, and Linux artifacts from the same client bundle.
 
-## Final audio
+## Rebuilding the runtime audio
 
-Place paid-plan 48 kHz WAV exports in:
+The checked-in MP3 files under `public/audio/` are runtime edits. To reproduce
+them, place the paid-plan 48 kHz WAV masters in:
 
 ```text
 audio/masters/cold-start.wav
