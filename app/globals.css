@@ -708,6 +708,34 @@ button:disabled {
   color: var(--danger);
 }
 
+.startup-error-card {
+  position: absolute;
+  z-index: 12;
+  top: 50%;
+  left: 50%;
+  width: min(520px, calc(100% - 70px));
+  padding: 2rem;
+  border: 1px solid var(--danger);
+  background: rgba(3, 12, 15, 0.96);
+  box-shadow: 0 30px 100px rgba(0, 0, 0, 0.72);
+  transform: translate(-50%, -50%);
+  text-align: center;
+  backdrop-filter: blur(18px);
+}
+
+.startup-error-card h2 {
+  margin: 0 0 0.7rem;
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  letter-spacing: -0.06em;
+}
+
+.startup-error-card > p:not(.eyebrow) {
+  margin: 0 auto 1.4rem;
+  max-width: 34rem;
+  color: #a3b9bf;
+  line-height: 1.6;
+}
+
 .completion-card {
   position: absolute;
   z-index: 10;

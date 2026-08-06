@@ -43,6 +43,7 @@ interface StageProps {
     replay: InputReplay,
   ) => void;
   onEngine: (engine: RivetEngine | null) => void;
+  onStartupError: (message: string | null) => void;
 }
 
 function GameStage({
@@ -53,6 +54,7 @@ function GameStage({
   onSnapshot,
   onComplete,
   onEngine,
+  onStartupError,
 }: StageProps) {
   const mountRef = useRef<HTMLDivElement>(null);
   const engineRef = useRef<RivetEngine | null>(null);
@@ -65,22 +67,34 @@ function GameStage({
     let cancelled = false;
     let activeEngine: RivetEngine | null = null;
     const mount = mountRef.current;
-    void import("../../src/game/engine").then(({ RivetEngine }) => {
-      if (cancelled) return;
-      activeEngine = new RivetEngine(
-        mount,
-        level,
-        practice,
-        initialSettingsRef.current,
-        {
-          onSnapshot,
-          onComplete,
-        },
-      );
-      engineRef.current = activeEngine;
-      onEngine(activeEngine);
-      void activeEngine.initialize();
-    });
+    onStartupError(null);
+    void import("../../src/game/engine")
+      .then(async ({ RivetEngine }) => {
+        if (cancelled) return;
+        activeEngine = new RivetEngine(
+          mount,
+          level,
+          practice,
+          initialSettingsRef.current,
+          {
+            onSnapshot,
+            onComplete,
+          },
+        );
+        engineRef.current = activeEngine;
+        onEngine(activeEngine);
+        await activeEngine.initialize();
+      })
+      .catch((error: unknown) => {
+        if (cancelled) return;
+        console.error("RIVET//DOWN failed to initialize", error);
+        activeEngine?.destroy();
+        engineRef.current = null;
+        onEngine(null);
+        onStartupError(
+          error instanceof Error ? error.message : "Game initialization failed",
+        );
+      });
 
     return () => {
       cancelled = true;
@@ -89,7 +103,15 @@ function GameStage({
       engineRef.current = null;
     };
     // runKey deliberately reconstructs the deterministic run.
-  }, [level, practice, runKey, onComplete, onEngine, onSnapshot]);
+  }, [
+    level,
+    practice,
+    runKey,
+    onComplete,
+    onEngine,
+    onSnapshot,
+    onStartupError,
+  ]);
 
   useEffect(() => {
     engineRef.current?.updateSettings(settings);
@@ -281,6 +303,7 @@ export default function RivetDown() {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [snapshot, setSnapshot] = useState<RuntimeSnapshot>(initialSnapshot);
   const [engine, setEngine] = useState<RivetEngine | null>(null);
+  const [startupError, setStartupError] = useState<string | null>(null);
   const [runKey, setRunKey] = useState(0);
   const [lastReplay, setLastReplay] = useState<InputReplay | null>(null);
 
@@ -329,6 +352,24 @@ export default function RivetDown() {
     },
     [practice, selectedLevel],
   );
+
+  const reloadCleanly = useCallback(async () => {
+    if ("serviceWorker" in navigator) {
+      const registrations = await navigator.serviceWorker.getRegistrations();
+      await Promise.all(
+        registrations.map((registration) => registration.unregister()),
+      );
+    }
+    if ("caches" in window) {
+      const keys = await caches.keys();
+      await Promise.all(
+        keys
+          .filter((key) => key.startsWith("rivet-down-"))
+          .map((key) => caches.delete(key)),
+      );
+    }
+    window.location.reload();
+  }, []);
 
   if (!hydrated) {
     return (
@@ -399,15 +440,33 @@ export default function RivetDown() {
             onSnapshot={setSnapshot}
             onComplete={complete}
             onEngine={setEngine}
+            onStartupError={setStartupError}
           />
           <div className="progress-track" aria-hidden="true">
             <span style={{ transform: `scaleX(${snapshot.progress})` }} />
           </div>
           {(snapshot.phase === "countdown" ||
             snapshot.phase === "dead" ||
-            snapshot.phase === "paused") && (
+            snapshot.phase === "paused") &&
+            !startupError && (
             <div className={`status-burst status-${snapshot.phase}`}>
               <span>{snapshot.message ?? snapshot.phase.toUpperCase()}</span>
+            </div>
+          )}
+          {startupError && (
+            <div className="startup-error-card" role="alert">
+              <p className="eyebrow">STARTUP INTERRUPTED</p>
+              <h2>Fresh game files required.</h2>
+              <p>
+                This browser kept part of an older release. Reload once to sync
+                the complete game.
+              </p>
+              <button
+                className="primary-button"
+                onClick={() => void reloadCleanly()}
+              >
+                Reload game
+              </button>
             </div>
           )}
           {snapshot.phase === "complete" && (
@@ -429,6 +488,7 @@ export default function RivetDown() {
                 <button
                   className="primary-button"
                   onClick={() => {
+                    setStartupError(null);
                     setSnapshot(initialSnapshot);
                     setRunKey((value) => value + 1);
                   }}
@@ -593,6 +653,7 @@ export default function RivetDown() {
                     className="card-launch"
                     disabled={locked}
                     onClick={() => {
+                      setStartupError(null);
                       setSnapshot(initialSnapshot);
                       setSelectedLevel(level);
                     }}
