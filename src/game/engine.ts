@@ -26,6 +26,8 @@ const PIXELS_PER_BEAT = 152;
 const FIXED_STEP = 1 / 120;
 const GRAVITY = 2750;
 const JUMP_IMPULSE = 930;
+const COYOTE_TIME_SECONDS = 0.1;
+const JUMP_BUFFER_SECONDS = 0.12;
 
 interface EngineCallbacks {
   onSnapshot: (snapshot: RuntimeSnapshot) => void;
@@ -49,6 +51,8 @@ export class RivetEngine {
   private gravity: 1 | -1 = 1;
   private mode: MechanicMode = "runner";
   private grounded = true;
+  private lastGroundedTime = 0;
+  private jumpBufferedUntil = Number.NEGATIVE_INFINITY;
   private actionHeld = false;
   private gamepadActionHeld = false;
   private simTime = 0;
@@ -235,6 +239,16 @@ export class RivetEngine {
     }
 
     this.applyPads();
+    if (
+      this.mode === "runner" &&
+      this.grounded &&
+      this.simTime <= this.jumpBufferedUntil
+    ) {
+      this.performRunnerJump();
+    }
+    if (this.grounded) {
+      this.lastGroundedTime = this.simTime;
+    }
     this.applyCollectibles();
     this.checkHazardCollisions(previousBeat, previousPlayerY);
 
@@ -290,6 +304,7 @@ export class RivetEngine {
         this.consumed.add(item.id);
         this.velocityY = -JUMP_IMPULSE * 1.16 * this.gravity;
         this.grounded = false;
+        this.jumpBufferedUntil = Number.NEGATIVE_INFINITY;
         this.conductor.orb();
         this.shake = this.settings.reducedMotion ? 0 : 4;
       }
@@ -437,12 +452,23 @@ export class RivetEngine {
       return;
     }
 
-    if (this.mode === "runner" && this.grounded) {
-      this.velocityY = -JUMP_IMPULSE * this.gravity;
-      this.grounded = false;
-      this.conductor.jump();
+    if (this.mode === "runner") {
+      const withinCoyoteWindow =
+        this.simTime - this.lastGroundedTime <= COYOTE_TIME_SECONDS;
+      if (this.grounded || withinCoyoteWindow) {
+        this.performRunnerJump();
+      } else {
+        this.jumpBufferedUntil = this.simTime + JUMP_BUFFER_SECONDS;
+      }
     }
   };
+
+  private performRunnerJump(): void {
+    this.velocityY = -JUMP_IMPULSE * this.gravity;
+    this.grounded = false;
+    this.jumpBufferedUntil = Number.NEGATIVE_INFINITY;
+    this.conductor.jump();
+  }
 
   private handleRelease = (): void => {
     if (this.phase !== "playing") {
@@ -580,6 +606,8 @@ export class RivetEngine {
     this.gravity = restoredGravity;
     this.mode = restoredMode;
     this.grounded = restoredMode !== "thruster";
+    this.lastGroundedTime = this.simTime;
+    this.jumpBufferedUntil = Number.NEGATIVE_INFINITY;
     this.actionHeld = false;
     this.particles.clear();
     this.phase = "countdown";

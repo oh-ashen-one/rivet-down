@@ -55,4 +55,54 @@ describe("RIVET//DOWN campaign", () => {
     expect(modesByLevel[4].has("polarity")).toBe(true);
     expect(modesByLevel[4].has("thruster")).toBe(true);
   });
+
+  it("gives Cold Start real recovery space between every floor spike", () => {
+    const coldStart = levels[0];
+    const floorSpikeBeats = coldStart.events
+      .filter((entry) => entry.type === "spike")
+      .map((entry) => entry.beat);
+    const recoveryWindows = floorSpikeBeats
+      .slice(1)
+      .map((beat, index) => beat - floorSpikeBeats[index]);
+
+    expect(Math.min(...recoveryWindows)).toBeGreaterThanOrEqual(2.7);
+    expect(floorSpikeBeats.slice(0, 3)).toEqual([12, 18.5, 21.25]);
+  });
+
+  it.each(levels)("$title keeps runner floor blocks within jump height", (level) => {
+    let mode: "runner" | "polarity" | "thruster" = "runner";
+    const unsafeBlocks: typeof level.events = [];
+
+    for (const entry of level.events) {
+      if (entry.type === "gate" && entry.targetMode) {
+        mode = entry.targetMode;
+      }
+      if (
+        entry.type === "block" &&
+        (entry.lane ?? "floor") === "floor" &&
+        mode === "runner" &&
+        (entry.height ?? 96) > 132
+      ) {
+        unsafeBlocks.push(entry);
+      }
+    }
+
+    expect(unsafeBlocks).toEqual([]);
+  });
+
+  it.each(levels)("$title gives every runner gap a nearby launch assist", (level) => {
+    const assists = level.events.filter(
+      (entry) => entry.type === "pad" || entry.type === "orb",
+    );
+    const gaps = level.events.filter((entry) => entry.type === "gap");
+
+    expect(gaps.every((gap) => (gap.widthBeats ?? 1) <= 2.5)).toBe(true);
+    expect(
+      gaps.every((gap) =>
+        assists.some(
+          (assist) => assist.beat <= gap.beat && assist.beat >= gap.beat - 2.1,
+        ),
+      ),
+    ).toBe(true);
+  });
 });
