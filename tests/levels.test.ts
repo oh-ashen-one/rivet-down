@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { levels } from "../src/game/levels";
+import {
+  MIN_RUNNER_BLOCK_CLEARANCE_PIXELS,
+  runnerBlockClearancePixels,
+} from "../src/game/tuning";
 
 describe("RIVET//DOWN campaign", () => {
   it("contains five increasingly demanding levels", () => {
@@ -69,7 +73,7 @@ describe("RIVET//DOWN campaign", () => {
     expect(floorSpikeBeats.slice(0, 3)).toEqual([12, 18.5, 21.25]);
   });
 
-  it.each(levels)("$title keeps runner floor blocks within jump height", (level) => {
+  it.each(levels)("$title gives every runner block generous jump clearance", (level) => {
     let mode: "runner" | "polarity" | "thruster" = "runner";
     const unsafeBlocks: typeof level.events = [];
 
@@ -81,7 +85,8 @@ describe("RIVET//DOWN campaign", () => {
         entry.type === "block" &&
         (entry.lane ?? "floor") === "floor" &&
         mode === "runner" &&
-        (entry.height ?? 96) > 132
+        runnerBlockClearancePixels(level.bpm, entry.height ?? 96) <
+          MIN_RUNNER_BLOCK_CLEARANCE_PIXELS
       ) {
         unsafeBlocks.push(entry);
       }

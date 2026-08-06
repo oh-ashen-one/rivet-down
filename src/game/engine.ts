@@ -7,6 +7,14 @@ import {
   segmentPointDistanceSquared,
   sweptAabbIntersects,
 } from "./collision";
+import {
+  BLOCK_WIDTH,
+  FLOOR_Y,
+  GRAVITY,
+  JUMP_IMPULSE,
+  PIXELS_PER_BEAT,
+  PLAYER_SIZE,
+} from "./tuning";
 import type {
   GameSettings,
   InputReplay,
@@ -19,13 +27,8 @@ import type {
 const WIDTH = 1440;
 const HEIGHT = 810;
 const PLAYER_X = 300;
-const PLAYER_SIZE = 54;
-const FLOOR_Y = 665;
 const CEILING_Y = 145;
-const PIXELS_PER_BEAT = 152;
 const FIXED_STEP = 1 / 120;
-const GRAVITY = 2750;
-const JUMP_IMPULSE = 930;
 const COYOTE_TIME_SECONDS = 0.1;
 const JUMP_BUFFER_SECONDS = 0.12;
 
@@ -809,8 +812,8 @@ export class RivetEngine {
     item: LevelEvent,
     x: number,
   ): { x: number; y: number; width: number; height: number } {
-    const height = item.height ?? 150;
-    const width = 86;
+    const height = item.height ?? 96;
+    const width = BLOCK_WIDTH;
     return item.lane === "ceiling"
       ? { x: x - width / 2, y: CEILING_Y, width, height }
       : { x: x - width / 2, y: FLOOR_Y - height, width, height };

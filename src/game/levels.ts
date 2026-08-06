@@ -93,7 +93,7 @@ function pattern(
   if (name === "intro") {
     push("spike", 4);
     push("pad", 6.5);
-    push("block", 8.5, { height: 92 });
+    push("block", 8.5, { height: 80 });
     // Teach two distinct jumps instead of asking new players to clear a
     // near-overlapping double spike with one frame-perfect press.
     push("spike", 10.5);
@@ -103,7 +103,7 @@ function pattern(
 
   if (name === "steps") {
     push("spike", 0);
-    push("block", 2, { height: 78 + intensity * 8 });
+    push("block", 2, { height: 78 + intensity * 3 });
     push("spike", 4);
     if (intensity > 1) {
       // Later levels may use a compact two-tooth cluster, but it remains a
@@ -112,7 +112,7 @@ function pattern(
     }
     push("gap", 8, { widthBeats: 1.15 + intensity * 0.08 });
     push("pad", 7.25);
-    push("block", 11, { height: Math.min(110 + intensity * 6, 132) });
+    push("block", 11, { height: 86 + intensity * 2 });
     push("spike", 12.5);
     if (intensity > 1) {
       push("spike", 13.15);
@@ -136,7 +136,7 @@ function pattern(
     push("orb", 5.2, { y: 345 });
     push("saw", 6.3, { lane: "mid", y: 520 });
     // Runner jump apex safely clears this with visible breathing room.
-    push("block", 8.5, { height: 132 });
+    push("block", 8.5, { height: 96 });
     push("orb", 10.2, { y: 360 });
     push("gap", 10.5, { widthBeats: 2.2 });
     push("spike", 14);
@@ -168,11 +168,11 @@ function pattern(
 
   if (name === "crusher") {
     push("block", 0, { lane: "ceiling", height: 220 });
-    push("block", 2.2, { lane: "floor", height: 112 });
+    push("block", 2.2, { lane: "floor", height: 90 });
     push("block", 4.4, { lane: "ceiling", height: 260 });
     push("orb", 5.4, { y: 420 });
     push("gap", 5.8, { widthBeats: 2.4 });
-    push("block", 8.5, { lane: "floor", height: 126 });
+    push("block", 8.5, { lane: "floor", height: 96 });
     push("saw", 11, { lane: "mid", y: 390 });
     push("spike", 13);
     push("spike", 14);
