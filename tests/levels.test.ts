@@ -2,6 +2,10 @@ import { describe, expect, it } from "vitest";
 import { levels } from "../src/game/levels";
 import {
   MIN_RUNNER_BLOCK_CLEARANCE_PIXELS,
+  MIN_PAD_LANDING_REACTION_SECONDS,
+  PAD_JUMP_MULTIPLIER,
+  jumpApexBeats,
+  jumpFlightBeats,
   runnerBlockClearancePixels,
 } from "../src/game/tuning";
 
@@ -70,7 +74,7 @@ describe("RIVET//DOWN campaign", () => {
       .map((beat, index) => beat - floorSpikeBeats[index]);
 
     expect(Math.min(...recoveryWindows)).toBeGreaterThanOrEqual(2.7);
-    expect(floorSpikeBeats.slice(0, 3)).toEqual([12, 18.5, 21.25]);
+    expect(floorSpikeBeats.slice(0, 3)).toEqual([12, 20.5, 25.5]);
   });
 
   it.each(levels)("$title gives every runner block generous jump clearance", (level) => {
@@ -109,5 +113,29 @@ describe("RIVET//DOWN campaign", () => {
         ),
       ),
     ).toBe(true);
+  });
+
+  it.each(levels)("$title restores control after every forced launch", (level) => {
+    const floorHazards = level.events.filter(
+      (entry) =>
+        entry.type === "spike" ||
+        (entry.type === "block" && (entry.lane ?? "floor") === "floor"),
+    );
+    const pads = level.events.filter((entry) => entry.type === "pad");
+    const requiredReactionBeats =
+      jumpApexBeats(level.bpm) +
+      (MIN_PAD_LANDING_REACTION_SECONDS * level.bpm) / 60;
+
+    for (const pad of pads) {
+      const landingBeat =
+        pad.beat + jumpFlightBeats(level.bpm, PAD_JUMP_MULTIPLIER);
+      const nextHazard = floorHazards.find((entry) => entry.beat > landingBeat);
+      if (nextHazard) {
+        expect(
+          nextHazard.beat - landingBeat,
+          `${pad.id} lands too close to ${nextHazard.id}`,
+        ).toBeGreaterThanOrEqual(requiredReactionBeats);
+      }
+    }
   });
 });

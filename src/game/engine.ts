@@ -12,6 +12,7 @@ import {
   FLOOR_Y,
   GRAVITY,
   JUMP_IMPULSE,
+  PAD_JUMP_MULTIPLIER,
   PIXELS_PER_BEAT,
   PLAYER_SIZE,
 } from "./tuning";
@@ -305,7 +306,7 @@ export class RivetEngine {
       }
       if (Math.abs(item.beat - this.currentBeat) < 0.16 && this.grounded) {
         this.consumed.add(item.id);
-        this.velocityY = -JUMP_IMPULSE * 1.16 * this.gravity;
+        this.velocityY = -JUMP_IMPULSE * PAD_JUMP_MULTIPLIER * this.gravity;
         this.grounded = false;
         this.jumpBufferedUntil = Number.NEGATIVE_INFINITY;
         this.conductor.orb();

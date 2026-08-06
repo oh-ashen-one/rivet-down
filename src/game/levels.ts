@@ -92,41 +92,27 @@ function pattern(
 
   if (name === "intro") {
     push("spike", 4);
-    push("pad", 6.5);
-    push("block", 8.5, { height: 80 });
-    // Teach two distinct jumps instead of asking new players to clear a
-    // near-overlapping double spike with one frame-perfect press.
-    push("spike", 10.5);
-    push("spike", 13.25);
+    push("block", 8, { height: 80 });
+    push("spike", 12.5);
     return result;
   }
 
   if (name === "steps") {
-    push("spike", 0);
-    push("block", 2, { height: 78 + intensity * 3 });
-    push("spike", 4);
-    if (intensity > 1) {
-      // Later levels may use a compact two-tooth cluster, but it remains a
-      // single readable jump rather than an awkward almost-landed retry.
-      push("spike", 4.65);
-    }
+    push("spike", 1.5);
+    push("block", 4.25, { height: 78 + intensity * 3 });
     push("gap", 8, { widthBeats: 1.15 + intensity * 0.08 });
     push("pad", 7.25);
-    push("block", 11, { height: 86 + intensity * 2 });
-    push("spike", 12.5);
-    if (intensity > 1) {
-      push("spike", 13.15);
-    }
   }
 
   if (name === "teeth") {
-    for (let index = 0; index < 4 + intensity; index += 1) {
-      push(index % 2 === 0 ? "spike" : "ceiling-spike", index * 1.5);
+    // Keep the tooth run ahead of the launch pad. Increasing the count used
+    // to place later teeth inside the forced gap jump at high BPM.
+    for (let index = 0; index < 5; index += 1) {
+      push(index % 2 === 0 ? "spike" : "ceiling-spike", 1.5 + index * 1.5);
     }
     push("saw", 8.5, { lane: "mid", y: 405 });
     push("gap", 11, { widthBeats: 1 + intensity * 0.1 });
     push("pad", 10.25);
-    push("spike", 13);
   }
 
   if (name === "orbs") {
@@ -135,11 +121,8 @@ function pattern(
     push("gap", 2.5, { widthBeats: 2.5 });
     push("orb", 5.2, { y: 345 });
     push("saw", 6.3, { lane: "mid", y: 520 });
-    // Runner jump apex safely clears this with visible breathing room.
-    push("block", 8.5, { height: 96 });
     push("orb", 10.2, { y: 360 });
     push("gap", 10.5, { widthBeats: 2.2 });
-    push("spike", 14);
   }
 
   if (name === "polarity") {
@@ -148,10 +131,8 @@ function pattern(
     push("ceiling-spike", 4);
     push("block", 6, { lane: "ceiling", height: 120 });
     push("gate", 8, { gravity: 1, targetMode: "runner" });
-    push("spike", 10);
     push("gap", 12, { widthBeats: 1.4 });
     push("pad", 11.1);
-    push("spike", 15);
   }
 
   if (name === "thruster") {
@@ -172,27 +153,26 @@ function pattern(
     push("block", 4.4, { lane: "ceiling", height: 260 });
     push("orb", 5.4, { y: 420 });
     push("gap", 5.8, { widthBeats: 2.4 });
-    push("block", 8.5, { lane: "floor", height: 96 });
     push("saw", 11, { lane: "mid", y: 390 });
     push("spike", 13);
     push("spike", 14);
   }
 
   if (name === "finale") {
-    push("spike", 0);
+    push("spike", 1.5);
     if (intensity > 1) {
-      push("spike", 0.65);
+      push("spike", 2.15);
     }
-    push("pad", 2);
-    push("orb", 3.8, { y: 390 });
-    push("gap", 4, { widthBeats: 2.2 });
-    push("gate", 6.5, {
+    push("pad", 3.5);
+    push("orb", 5.3, { y: 390 });
+    push("gap", 5.5, { widthBeats: 2.2 });
+    push("gate", 8, {
       gravity: intensity > 3 ? -1 : 1,
       targetMode: intensity > 3 ? "polarity" : "runner",
     });
-    push(intensity > 3 ? "ceiling-spike" : "spike", 9);
-    push("saw", 11, { lane: "mid", y: 405 });
-    push("gate", 13.5, { gravity: 1, targetMode: "runner" });
+    push(intensity > 3 ? "ceiling-spike" : "spike", 10.5);
+    push("saw", 12.5, { lane: "mid", y: 405 });
+    push("gate", 14.5, { gravity: 1, targetMode: "runner" });
   }
 
   return result;

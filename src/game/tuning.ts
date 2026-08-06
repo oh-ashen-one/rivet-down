@@ -6,6 +6,17 @@ export const JUMP_IMPULSE = 930;
 export const BLOCK_WIDTH = 72;
 
 export const MIN_RUNNER_BLOCK_CLEARANCE_PIXELS = 40;
+export const PAD_JUMP_MULTIPLIER = 1.16;
+export const MIN_PAD_LANDING_REACTION_SECONDS = 0.18;
+
+export function jumpFlightBeats(bpm: number, impulseMultiplier = 1): number {
+  const flightSeconds = (2 * JUMP_IMPULSE * impulseMultiplier) / GRAVITY;
+  return (flightSeconds * bpm) / 60;
+}
+
+export function jumpApexBeats(bpm: number): number {
+  return ((JUMP_IMPULSE / GRAVITY) * bpm) / 60;
+}
 
 export function runnerBlockClearancePixels(
   bpm: number,
