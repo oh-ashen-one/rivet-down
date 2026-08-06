@@ -509,7 +509,15 @@ export default function RivetDown() {
           <button className="secondary-button" onClick={() => setSettingsOpen(true)}>
             Calibration
           </button>
-          <span className="github-link">SOURCE READY</span>
+          <a
+            className="github-link"
+            href="https://github.com/oh-ashen-one/rivet-down"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Open the RIVET//DOWN source code on GitHub"
+          >
+            SOURCE READY
+          </a>
         </div>
       </header>
 

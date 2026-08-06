@@ -41,9 +41,10 @@ test("server-renders the complete RIVET//DOWN campaign shell", async () => {
 });
 
 test("keeps starter preview code out of the product", async () => {
-  const [page, layout, levels, packageJson, previewFiles] = await Promise.all([
+  const [page, layout, menu, levels, packageJson, previewFiles] = await Promise.all([
     readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/components/RivetDown.tsx", import.meta.url), "utf8"),
     readFile(new URL("../src/game/levels.ts", import.meta.url), "utf8"),
     readFile(new URL("../package.json", import.meta.url), "utf8"),
     readdir(new URL("../app/_sites-preview/", import.meta.url)).catch(() => []),
@@ -52,6 +53,8 @@ test("keeps starter preview code out of the product", async () => {
   assert.match(page, /<RivetDown \/>/);
   assert.match(layout, /const title = "RIVET\/\/DOWN/);
   assert.match(layout, /manifest\.webmanifest/);
+  assert.match(menu, /href="https:\/\/github\.com\/oh-ashen-one\/rivet-down"/);
+  assert.match(menu, /aria-label="Open the RIVET\/\/DOWN source code on GitHub"/);
   for (const title of [
     "Cold Start",
     "Pressure Line",
